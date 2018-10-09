@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:cardCornerRadius="@dimen/dim_8dp"
+    android:layout_margin="@dimen/dim_8dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/profile_placeholder"
+            app:sriv_left_top_corner_radius="8dp"
+            app:sriv_left_bottom_corner_radius="@dimen/dim_8dp"
+            app:sriv_right_bottom_corner_radius="@dimen/dim_8dp"
+            app:sriv_right_top_corner_radius="@dimen/dim_8dp"/>
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/last"
+            android:padding="12dip"
+            android:text="@string/sale"
+            android:textStyle="bold"
+            android:textColor="#ffffffff" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/layout"
+            android:layout_marginTop="140dp"
+            android:paddingStart="@dimen/dim_8dp"
+            android:paddingEnd="@dimen/dim_8dp">
+
+            <TextView
+                android:id="@+id/eg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1000"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/currencyTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saudi_ryal"
+                android:textStyle="bold"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/m2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="200"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/unitTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/m2"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white"/>
+
+            <TextView
+                android:id="@+id/cityTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="masr elgdeda"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/countryTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cairo"
+                android:textStyle="bold"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@color/white" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

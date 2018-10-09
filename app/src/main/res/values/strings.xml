@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">Akar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="el_aaka">El-Aakar</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="forget_the_password">Forget the password ?</string>
+    <string name="sing_up">sing up</string>
+    <string name="sing_in">sing in</string>
+    <string name="login">login</string>
+    <string name="name">name</string>
+    <string name="mobile">mobile</string>
+    <string name="conform_password">confirm password</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Android Studio</string>
+    <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="register">Register</string>
+    <string name="contact_us">contact us</string>
+    <string name="update_password">update password</string>
+    <string name="update_accountinfo">update accountInfo</string>
+    <string name="Home">Home</string>
+    <string name="homes">Homes</string>
+    <string name="flats">Flats</string>
+    <string name="restau">Restaurants</string>
+    <string name="storage">Storage</string>
+    <string name="farmer">farmers</string>
+    <string name="resorts">Resorts</string>
+    <string name="cafes">Cafes</string>
+    <string name="villa">villa</string>
+    <string name="profile">Profile</string>
+    <string name="offer_a_building">Offer a Building</string>
+    <string name="request_a_building">Request a Building</string>
+    <string name="my_favourite">My Favourite</string>
+    <string name="change_language">Change Language</string>
+    <string name="logout">Logout</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="about">About</string>
+    <string name="who_us">Who Us</string>
+    <string name="change_language_prompt">Are you sure you want to change language ?</string>
+    <string name="no">no</string>
+    <string name="yes">yes</string>
+    <string name="code">code:</string>
+    <string name="Details">Details</string>
+    <string name="aboutt">about:</string>
+    <string name="area">Area:</string>
+    <string name="bathrooms">Bathrooms:</string>
+    <string name="price">Price:</string>
+    <string name="grage">Grage:</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB-zheFSuqeyDwzcnPampGw_czo72TDVM8</string>
+    <string name="district">District:</string>
+    <string name="address">Address:</string>
+    <string name="order">Order</string>
+    <string name="update_passwordd">update password</string>
+    <string name="update_profile">update profile</string>
+    <string name="profilee">profile</string>
+    <string name="filter">filter</string>
+    <string name="agree_the_privacy_policy">agree the privacy policy</string>
+    <string name="bedroom_">Bedroom:</string>
+    <string name="bathroom_">Bathroom:</string>
+    <string name="for_rent">For Rent</string>
+    <string name="for_sale">For Sale</string>
+    <string name="choosetype">choose type:</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">new password</string>
+    <string name="offer">offer building</string>
+    <string name="description">description</string>
+    <string name="map">map</string>
+    <string name="submit">submit</string>
+    <string name="choosecit">choose city</string>
+    <string name="chooseDistrict">choose dustcart</string>
+    <string name="choosedepartment">choose department</string>
+    <string name="rent">Rent</string>
+    <string name="sale">Sale</string>
+    <string name="errorconnection">error connection</string>
+    <string name="errorlogin">error : login</string>
+    <string name="errorregister">error:register</string>
+    <string name="youchooseplace">you choose place</string>
+    <string name="pleasecompleteimage">please complete image</string>
+    <string name="pleasecompletform">please complet form</string>
+    <string name="pleasecompletmap">please complet map</string>
+    <string name="notdata">not data</string>
+    <string name="fail">fail</string>
+    <string name="complete">complete</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="m2">M2</string>
+    <string name="saudi_ryal">SR</string>
+    <string name="name_">Name:</string>
+    <string name="type_">Type:</string>
+    <string name="wrong_email_format">wroong email format</string>
+    <string name="error_invalid_password">password is too short</string>
+    <string name="plz_enter_new_pass">please enter new password</string>
+    <string name="plz_enter_old_pass">please_enter_old_pass</string>
+    <string name="_1" translatable="false">1</string>
+    <string name="_2" translatable="false">2</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="choose_1_2">please choose 1 and 2</string>
+    <string name="choose_2_imgs">please choose at least 2 photos</string>
+    <string name="rooms">Rooms:</string>
+    <string name="would_you_like_a_garage">Garage?</string>
+    <string name="update">update</string>
+    <string name="min">min</string>
+    <string name="max">max</string>
+    <string name="no_internet">no internet connect</string>
+    <string name="choose_1and_2"><![CDATA[please choose 1 & 2 only]]></string>
+    <string name="garage_">Garage:</string>
+
+
+</resources>
