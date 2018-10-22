@@ -73,7 +73,7 @@ public class SubCategFragment extends Fragment {
 //            distanceMin = getArguments().getString("areaMin");
 //            distanceMax = getArguments().getString("areaMax");
         }
-        Toast.makeText(getActivity(), "after " + city, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "after " + city, Toast.LENGTH_SHORT).show();
 
     }
 
