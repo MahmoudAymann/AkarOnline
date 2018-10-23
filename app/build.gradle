@@ -9,17 +9,17 @@ android {
         config {
             keyAlias 'maymanm'
             keyPassword 'spectraAkarat'
-            storeFile file('C:/Users/Karim/Desktop/akaratKey.jks')
+            storeFile file('C:/Users/mahmo/Desktop/AkarOnline/app/akaratKey.jks')
             storePassword 'spectraAkarat'
         }
     }
     compileSdkVersion 27
     defaultConfig {
-        applicationId 'com.spectraapps.akarat'
+        applicationId 'com.tkmsoft.akarat'
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 3
-        versionName "3.0"
+        versionCode 5
+        versionName "5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
