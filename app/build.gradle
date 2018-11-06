@@ -13,13 +13,14 @@ android {
             storePassword 'spectraAkarat'
         }
     }
+
     compileSdkVersion 27
     defaultConfig {
         applicationId 'com.tkmsoft.akarat'
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 5
-        versionName "5.0"
+        versionCode 6
+        versionName "6.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
