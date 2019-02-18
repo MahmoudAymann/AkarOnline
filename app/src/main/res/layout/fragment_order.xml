@@ -85,7 +85,7 @@
 
 
         <LinearLayout
-            android:id="@+id/lin4"
+            android:id="@+id/distLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_8dp"

@@ -1,7 +1,7 @@
-package com.tkmsoft.akarat;
+package com.tkmsoft.akarat.activities;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -17,22 +17,26 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.tkmsoft.akarat.fragment.HomeFragment;
-import com.tkmsoft.akarat.fragment.ProfileFragment;
-import com.tkmsoft.akarat.fragment.SubCategFragment;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
-import com.tkmsoft.akarat.navfragment.ContactUsFragment;
-import com.tkmsoft.akarat.navfragment.OfferFragment;
-import com.tkmsoft.akarat.navfragment.OrderFragment;
-import com.tkmsoft.akarat.navfragment.WhoUsFragment;
+import com.tkmsoft.akarat.R;
+import com.tkmsoft.akarat.fragment.main.home.HomeFragment;
+import com.tkmsoft.akarat.fragment.main.ProfileFragment;
+import com.tkmsoft.akarat.fragment.main.SubCategFragment;
+import com.tkmsoft.akarat.interfaces.IOnBackPressed;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
+import com.tkmsoft.akarat.fragment.main.navfragment.ContactUsFragment;
+import com.tkmsoft.akarat.fragment.main.navfragment.OfferFragment;
+import com.tkmsoft.akarat.fragment.main.navfragment.OrderFragment;
+import com.tkmsoft.akarat.fragment.main.navfragment.WhoUsFragment;
 import com.tkmsoft.akarat.util.ListSharePreference;
+import com.tkmsoft.akarat.util.MoveToFragment;
+import com.tkmsoft.akarat.util.MyContextWrapper;
 
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IoCallBack {
+        implements NavigationView.OnNavigationItemSelectedListener, MainViewCallBack {
     ListSharePreference.Set setSharedPreference;
     ListSharePreference.Get getSharedPreference;
     Boolean mIsLogged;
@@ -46,54 +50,28 @@ public class MainActivity extends AppCompatActivity
     AlertDialog.Builder alertDialogBuilder;
     String api_token;
     DrawerLayout drawer;
+    MoveToFragment moveFragment ;
+
+    private IOnBackPressed onBackPressedListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        setSharedPreference = new ListSharePreference.Set(MainActivity.this.getApplicationContext());
-        getSharedPreference = new ListSharePreference.Get(MainActivity.this.getApplicationContext());
-        setLAyoutLanguage();
+        setLayoutLanguage();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mIsLogged = getSharedPreference.getIsLogged();
         textView = findViewById(R.id.toolbar_title);
         filter = findViewById(R.id.toolbar_filter_button);
-        iniui(toolbar);
-
+        moveFragment = new MoveToFragment(this);
+        initUi(toolbar);
         getUserInfo();
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private void setLAyoutLanguage() {
-        String langStr = getSharedPreference.getLanguage();
-        //Toast.makeText(LoginActivity.this, ""+langStr, Toast.LENGTH_SHORT).show();
-
-        if (langStr.equals("en")) {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-            locale = new Locale("en");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            this.getApplicationContext().getResources().updateConfiguration(config, null);
-
-        } else {
-            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-            locale = new Locale("ar");
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            this.getApplicationContext().getResources().updateConfiguration(config, null);
-        }
-        this.setContentView(R.layout.activity_home);
-        NavigationView navigationView = this.findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
     }
 
 
@@ -114,7 +92,7 @@ public class MainActivity extends AppCompatActivity
                 .into(mNavCircleImageView);
         Intent intent = getIntent();
        int key = intent.getIntExtra("key", 0);
-//        Toast.makeText(this, ""+ intent.getStringExtra("type"), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, ""+ intent.getStringExtra("type"), Toast.LENGTH_SHORT).getShow();
         if (key == 1) {
             Bundle bundle = new Bundle();
             bundle.putString("type", intent.getStringExtra("type"));
@@ -134,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void iniui(Toolbar toolbar) {
+    private void initUi(Toolbar toolbar) {
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -150,19 +128,37 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else if (drawer.isDrawerOpen(GravityCompat.END)) {
-            drawer.closeDrawer(GravityCompat.END);
-        } else {
-            super.onBackPressed();
-        }
+    private void setLayoutLanguage() {
+        if (getLang().equals("ar"))
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        setSharedPreference = new ListSharePreference.Set(newBase);
+        getSharedPreference = new ListSharePreference.Get(newBase);
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, getLang()));
+    }
+
+    private String getLang() {
+        return getSharedPreference.getLanguage();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (onBackPressedListener != null)
+            onBackPressedListener.onBackPressed();
+        else
+            super.onBackPressed();
+    }
+
+    public void setOnBackPressedListener(IOnBackPressed onBackPressedListener) {
+        this.onBackPressedListener = onBackPressedListener;
+    }
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
@@ -178,8 +174,7 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.nav_offer) {
             try {
                 getFragmentManager().beginTransaction().replace(R.id.main_frame, new OfferFragment()).addToBackStack(null).commit();
-            } catch (Exception e) {
-            }
+            } catch (Exception ignore) {}
         }
         else if (id == R.id.nav_whoUs) {
             getFragmentManager().beginTransaction().replace(R.id.main_frame, new WhoUsFragment()).addToBackStack(null).commit();

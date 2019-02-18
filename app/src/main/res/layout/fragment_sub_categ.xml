@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tkmsoft.akarat.fragment.SubCategFragment">
+    tools:context="com.tkmsoft.akarat.fragment.main.SubCategFragment">
 
     <com.baoyz.widget.PullRefreshLayout
         android:id="@+id/swipeRefreshLayouthome"

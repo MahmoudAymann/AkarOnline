@@ -30,8 +30,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
                               ListAllListeners listAllListeners) {
         this.bDataList = bDataList;
         this.listAllListeners = listAllListeners;
-        this.context = context;
-    }
+        this.context = context; }
 
     @NonNull
     @Override

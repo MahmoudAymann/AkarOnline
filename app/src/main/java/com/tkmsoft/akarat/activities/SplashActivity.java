@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat;
+package com.tkmsoft.akarat.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.util.ListSharePreference;
 
 public class SplashActivity extends AppCompatActivity {

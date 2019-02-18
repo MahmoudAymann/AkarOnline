@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.fragment;
+package com.tkmsoft.akarat.fragment.main.home;
 
 
 import android.app.Activity;
@@ -18,8 +18,9 @@ import android.widget.Toast;
 import com.baoyz.widget.PullRefreshLayout;
 import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.adapter.HomeAdapter;
-import com.tkmsoft.akarat.api.Api;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
+import com.tkmsoft.akarat.network.api.Api;
+import com.tkmsoft.akarat.fragment.main.SubCategFragment;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.AkarsModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.ListSharePreference;
@@ -36,13 +37,14 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
     RecyclerView recycler;
     HomeAdapter homeAdapter;
-    private IoCallBack mMainViewsCallBack;
+    private MainViewCallBack mMainViewsCallBack;
     PullRefreshLayout pullRefreshLayout;
     ProgressBar progressBar;
     ListSharePreference.Set setSharedPreference;
     ListSharePreference.Get getSharedPreference;
     int type;
     private String TAG = getClass().getSimpleName();
+    private Api api;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -79,9 +81,9 @@ public class HomeFragment extends Fragment {
     }
 
     private void initService() {
-        Api api = MyRetrofitClient.categories().create(Api.class);
-        Call<AkarsModel> akarsModelCall = api.getCategories();
-        akarsModelCall.enqueue(new Callback<AkarsModel>() {
+        api = MyRetrofitClient.getBase().create(Api.class);
+
+        akarsModelCall().enqueue(new Callback<AkarsModel>() {
             @Override
             public void onResponse(@NonNull Call<AkarsModel> call, @NonNull Response<AkarsModel> response) {
                 if (response.isSuccessful()) {
@@ -90,7 +92,6 @@ public class HomeFragment extends Fragment {
                             initAdapter(response.body().getData().getCategories());
                         } else
                             Toast.makeText(getActivity(), "" + response.body().getStatus().getTitle(), Toast.LENGTH_SHORT).show();
-                        //  Toast.makeText(getActivity(), ""+response.body().getData().getCategories().get(0).getPhoto(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 progressBar.setVisibility(View.GONE);
@@ -105,6 +106,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    private Call<AkarsModel> akarsModelCall() {
+        return api.getCategories();
     }
 
     private void initAdapter(ArrayList<AkarsModel.DataBean.CategoriesBean> categories) {
@@ -130,7 +135,7 @@ public class HomeFragment extends Fragment {
     public void onAttach(Activity context) {
         super.onAttach(context);
         try {
-            mMainViewsCallBack = (IoCallBack) context;
+            mMainViewsCallBack = (MainViewCallBack) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "error");
         }

@@ -8,7 +8,7 @@ public class  AddModel {
 
     /**
      * status : {"type":"success","title":"تم اضافه البيانات بنجاح بنتظار موافقه الادمن"}
-     * data : {"order_info":{"name":"asdasd","type_id":"1","category_id":"1","city_id":"1","disrict_id":"1","rooms":"1","bathrooms":"1","garage":"1","area":"21","price":"12212","address":"xadsf","condition":"1","lat":"1","long":"1","about":"sddsfsdf","code":"jBHsact654","order":0,"member_id":27,"updated_at":"2018-10-06 14:19:54","created_at":"2018-10-06 14:19:54","id":39,"type":"بيع","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","images":[{"id":41,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:54","updated_at":"2018-10-06 14:19:54"},{"id":42,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:55","updated_at":"2018-10-06 14:19:55"}],"category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}}
+     * data : {"order_info":{"name":"asdasd","type_id":"1","category_id":"1","city_id":"1","disrict_id":"1","rooms":"1","bathrooms":"1","garage":"1","area":"21","price":"12212","address":"xadsf","condition":"1","lat":"1","long":"1","about":"sddsfsdf","code":"jBHsact654","getOrder":0,"member_id":27,"updated_at":"2018-10-06 14:19:54","created_at":"2018-10-06 14:19:54","id":39,"type":"بيع","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","images":[{"id":41,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:54","updated_at":"2018-10-06 14:19:54"},{"id":42,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:55","updated_at":"2018-10-06 14:19:55"}],"category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}}
      */
 
     private StatusBean status;
@@ -58,7 +58,7 @@ public class  AddModel {
 
     public static class DataBean {
         /**
-         * order_info : {"name":"asdasd","type_id":"1","category_id":"1","city_id":"1","disrict_id":"1","rooms":"1","bathrooms":"1","garage":"1","area":"21","price":"12212","address":"xadsf","condition":"1","lat":"1","long":"1","about":"sddsfsdf","code":"jBHsact654","order":0,"member_id":27,"updated_at":"2018-10-06 14:19:54","created_at":"2018-10-06 14:19:54","id":39,"type":"بيع","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","images":[{"id":41,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:54","updated_at":"2018-10-06 14:19:54"},{"id":42,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:55","updated_at":"2018-10-06 14:19:55"}],"category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}
+         * order_info : {"name":"asdasd","type_id":"1","category_id":"1","city_id":"1","disrict_id":"1","rooms":"1","bathrooms":"1","garage":"1","area":"21","price":"12212","address":"xadsf","condition":"1","lat":"1","long":"1","about":"sddsfsdf","code":"jBHsact654","getOrder":0,"member_id":27,"updated_at":"2018-10-06 14:19:54","created_at":"2018-10-06 14:19:54","id":39,"type":"بيع","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","images":[{"id":41,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:54","updated_at":"2018-10-06 14:19:54"},{"id":42,"name":"http://3qaronline.net/storage/uploads/akar/1538835594_xxxxcc.png","akar_id":"39","created_at":"2018-10-06 14:19:55","updated_at":"2018-10-06 14:19:55"}],"category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}
          */
 
         private OrderInfoBean order_info;
@@ -89,7 +89,7 @@ public class  AddModel {
              * long : 1
              * about : sddsfsdf
              * code : jBHsact654
-             * order : 0
+             * getOrder : 0
              * member_id : 27
              * updated_at : 2018-10-06 14:19:54
              * created_at : 2018-10-06 14:19:54

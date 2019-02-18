@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.fragment;
+package com.tkmsoft.akarat.fragment.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +14,14 @@ import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
-import com.tkmsoft.akarat.MainActivity;
+import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.adapter.BathroomAdapter;
 import com.tkmsoft.akarat.adapter.BedroomAdapter;
 import com.tkmsoft.akarat.adapter.SpinnerCityAdapter;
 import com.tkmsoft.akarat.adapter.SpinnerDiscirt;
 import com.tkmsoft.akarat.adapter.TypeAdapter;
-import com.tkmsoft.akarat.api.Api;
+import com.tkmsoft.akarat.network.api.Api;
 import com.tkmsoft.akarat.model.BathroomModel;
 import com.tkmsoft.akarat.model.BedroomModel;
 import com.tkmsoft.akarat.model.CityModel;
@@ -182,13 +182,13 @@ public class FilterActivity extends AppCompatActivity {
 //        myIntent.putExtra("areaMin", areaMinET.getText().toString());
 //        myIntent.putExtra("areaMax", areaMaxET.getText().toString());
         myIntent.putExtra("key", 1);
-//        Toast.makeText(this, "before: " + cityCode, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "before: " + cityCode, Toast.LENGTH_SHORT).getShow();
         myIntent.setClassName("com.tkmsoft.akarat", MainActivity.class.getCanonicalName());
         startActivity(myIntent);
     }
 
     private void initServiceCity() {
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<CityModel> loginModelCall = api.getcity();
         loginModelCall.enqueue(new Callback<CityModel>() {
 
@@ -251,7 +251,7 @@ public class FilterActivity extends AppCompatActivity {
     }
 
     private void initServiceDistrict() {
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<CityModel> loginModelCall = api.getcity();
         loginModelCall.enqueue(new Callback<CityModel>() {
             int pos = Integer.parseInt(cityCode);

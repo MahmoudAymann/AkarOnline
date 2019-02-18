@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.fragment;
+package com.tkmsoft.akarat.fragment.main;
 
 
 import android.app.Activity;
@@ -24,8 +24,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.adapter.SliderIamgeAdapter;
-import com.tkmsoft.akarat.api.Api;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
+import com.tkmsoft.akarat.network.api.Api;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.AkarsModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.ListSharePreference;
@@ -54,7 +54,7 @@ public class MdetailsFragment extends Fragment implements OnMapReadyCallback {
     private ViewPager mPager;
     private static int currentPage = 0;
     ArrayList<AkarsModel.DataBean.CategoriesBean.AkarsBean.ImagesBean> image1 = new ArrayList<>();
-    IoCallBack mMainViewsCallBack;
+    MainViewCallBack mMainViewsCallBack;
     String id;
     int id1;
     String addres;
@@ -196,7 +196,7 @@ public class MdetailsFragment extends Fragment implements OnMapReadyCallback {
     public void onAttach(Activity context) {
         super.onAttach(context);
         try {
-            mMainViewsCallBack = (IoCallBack) context;
+            mMainViewsCallBack = (MainViewCallBack) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "error");
         }
@@ -221,7 +221,7 @@ public class MdetailsFragment extends Fragment implements OnMapReadyCallback {
         image1 = new ArrayList<>();
         id1 = getSharedPreference.getkId();
         id = getSharedPreference.getgId();
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<AkarsModel> akarsModelCall = api.getCategories();
         akarsModelCall.enqueue(new Callback<AkarsModel>() {
             @Override

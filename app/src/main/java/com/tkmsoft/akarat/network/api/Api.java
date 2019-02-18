@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.api;
+package com.tkmsoft.akarat.network.api;
 
 import com.tkmsoft.akarat.model.AddModel;
 import com.tkmsoft.akarat.model.AkarsModel;
@@ -52,7 +52,7 @@ public interface Api {
                               @Field("long") String longg
     );
 
-    @GET("categories")
+    @GET("getBase")
     Call<AkarsModel> getCategories();
 
     @GET("cities")

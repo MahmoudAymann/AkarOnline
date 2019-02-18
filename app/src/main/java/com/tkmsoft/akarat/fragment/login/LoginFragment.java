@@ -1,10 +1,13 @@
-package com.tkmsoft.akarat.LoginRegister;
+package com.tkmsoft.akarat.fragment.login;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +20,15 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.tkmsoft.akarat.MainActivity;
+import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.R;
-import com.tkmsoft.akarat.api.Api;
+import com.tkmsoft.akarat.network.api.Api;
 import com.tkmsoft.akarat.model.LoginModel;
 import com.tkmsoft.akarat.model.UserInfModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.ConnectNetwork;
 import com.tkmsoft.akarat.util.ListSharePreference;
+import com.tkmsoft.akarat.util.MyApp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,20 +49,34 @@ public class LoginFragment extends Fragment {
     ListSharePreference.Get getSharedPreference;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    String api_token;
+    private String mLanguage;
+    private FragmentActivity mContext;
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        if (context instanceof FragmentActivity)
+            mContext = (FragmentActivity) context;
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setSharedPreference = new ListSharePreference.Set(mContext);
+        getSharedPreference = new ListSharePreference.Get(mContext);
+
+        mLanguage = getSharedPreference.getLanguage();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_login, container, false);
-        setSharedPreference = new ListSharePreference.Set(LoginFragment.this.getActivity().getApplicationContext());
-        getSharedPreference = new ListSharePreference.Get(LoginFragment.this.getActivity().getApplicationContext());
         ButterKnife.bind(this, root);
         iniui(root);
         return root;
@@ -75,7 +93,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                getFragmentManager().beginTransaction().replace(R.id.frame_home, new RegisterFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.login_frame, new RegisterFragment()).addToBackStack(null).commit();
 
             }
         });
@@ -126,7 +144,7 @@ public class LoginFragment extends Fragment {
 
     private void serverLogin() {
         progressBar.setVisibility(View.VISIBLE);
-        Api api = MyRetrofitClient.getBase().create(Api.class);
+        Api api = MyRetrofitClient.getAuth().create(Api.class);
         Call<LoginModel> loginModelCall = api.login(mEmailEditText.getText().toString(), mPasswordEditText.getText().toString());
         loginModelCall.enqueue(new Callback<LoginModel>() {
             @Override
@@ -134,13 +152,31 @@ public class LoginFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        if (response.body().getStatus().getType().equals("success")) {
-                            api_token = response.body().getData().getApi_token();
-                            setSharedPreference.setIsLogged(true);
-                            setSharedPreference.settokenId(api_token);
-                            serverUserInfo();
-                        } else
-                            Toast.makeText(getActivity(), "" + response.body().getStatus().getTitle(), Toast.LENGTH_SHORT).show();
+                        LoginModel.StatusBean statusBean = response.body().getStatus();
+                        if (statusBean != null) {
+                            if (statusBean.getType().equals("success")) {
+                                LoginModel.DataBean dataBean = response.body().getData();
+                                if (dataBean != null) {
+                                    setSharedPreference.setIsLogged(true);
+                                    setSharedPreference.settokenId(dataBean.getApi_token());
+                                    serverUserInfo(dataBean.getApi_token());
+                                }
+
+                            } else {
+                                String msg = statusBean.getTitle();
+                                if (msg.equals("المستخدم غير موجود")) {
+                                    if (mLanguage.equals("ar"))
+                                        Toast.makeText(mContext, "" + statusBean.getTitle(), Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(mContext, "" + getString(R.string.user_not_found), Toast.LENGTH_SHORT).show();
+                                } else if (msg.equals("كلمه المرور خظأ")) {
+                                    if (mLanguage.equals("ar"))
+                                        Toast.makeText(mContext, "" + statusBean.getTitle(), Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(mContext, "" + getString(R.string.inc_pass), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -155,9 +191,9 @@ public class LoginFragment extends Fragment {
     }
 
 
-    private void serverUserInfo() {
+    private void serverUserInfo(String api_token) {
         progressBar.setVisibility(View.VISIBLE);
-        Api api = MyRetrofitClient.getBase().create(Api.class);
+        final Api api = MyRetrofitClient.getAuth().create(Api.class);
         Call<UserInfModel> loginModelCall = api.inf(api_token);
         loginModelCall.enqueue(new Callback<UserInfModel>() {
             @Override
@@ -165,21 +201,28 @@ public class LoginFragment extends Fragment {
                 if (response.isSuccessful()) {
                     progressBar.setVisibility(View.GONE);
                     assert response.body() != null;
-                    if (response.body().getData() != null) {
+                    UserInfModel.StatusBean statusBean = response.body().getStatus();
+                    if (statusBean != null) {
+                        if (statusBean.getType().equals("success")) {
+                            UserInfModel.DataBean dataBean = response.body().getData();
+                            if (dataBean != null) {
+                                UserInfModel.DataBean.UserInfoBean userInfoBean = dataBean.getUser_info();
+                                if (userInfoBean != null) {
+                                    String id = String.valueOf(userInfoBean.getId());
+                                    String name = userInfoBean.getName();
+                                    String email = userInfoBean.getEmail();
+                                    String mobile = userInfoBean.getPhone();
+                                    String image = userInfoBean.getAvatar();
 
-                        String id = String.valueOf(response.body().getData().getUser_info().getId());
-                        String name = response.body().getData().getUser_info().getName();
-                        String email = response.body().getData().getUser_info().getEmail();
-                        String mobile = response.body().getData().getUser_info().getPhone();
-                        String image = response.body().getData().getUser_info().getAvatar();
+                                    saveUserInfo(id, email, name, mobile, image);
 
-                        saveUserInfo(id, email, name, mobile, image);
-
-                        Intent myIntent = new Intent();
-                        myIntent.setClassName("com.tkmsoft.akarat", MainActivity.class.getCanonicalName());
-                        startActivity(myIntent);
-                        getActivity().finish();
-
+                                    Intent myIntent = new Intent();
+                                    myIntent.setClassName(MyApp.getContext().getPackageName(), MainActivity.class.getCanonicalName());
+                                    startActivity(myIntent);
+                                    mContext.finish();
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -206,6 +249,7 @@ public class LoginFragment extends Fragment {
             return true;
         else {
             mEmailEditText.setError(getString(R.string.wrong_email_format));
+            mEmailEditText.setFocusable(true);
             YoYo.with(Techniques.Shake)
                     .playOn(mEmailEditText);
             return false;
@@ -217,6 +261,7 @@ public class LoginFragment extends Fragment {
         if (password.length() > 2 || password.length() == 0)
             return true;
         else {
+            mPasswordEditText.setFocusable(true);
             mPasswordEditText.setError(getString(R.string.error_invalid_password));
             YoYo.with(Techniques.Shake)
                     .duration(700)

@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.fragment;
+package com.tkmsoft.akarat.fragment.main;
 
 
 import android.app.Activity;
@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.baoyz.widget.PullRefreshLayout;
 import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.adapter.SubCategoryAdapter;
-import com.tkmsoft.akarat.api.Api;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
+import com.tkmsoft.akarat.network.api.Api;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.AkarsModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.ListSharePreference;
@@ -40,7 +40,7 @@ import retrofit2.Response;
 public class SubCategFragment extends Fragment {
 
     private RecyclerView recycler;
-    private IoCallBack mMainViewsCallBack;
+    private MainViewCallBack mMainViewsCallBack;
     PullRefreshLayout pullRefreshLayout;
 
     ListSharePreference.Set setSharedPreference;
@@ -73,14 +73,14 @@ public class SubCategFragment extends Fragment {
 //            distanceMin = getArguments().getString("areaMin");
 //            distanceMax = getArguments().getString("areaMax");
         }
-        //Toast.makeText(getActivity(), "after " + city, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "after " + city, Toast.LENGTH_SHORT).getShow();
 
     }
 
     private void serverAkars() {
         progressBar.setVisibility(View.VISIBLE);
         final int categPos = Integer.parseInt(getSharedPreference.getgId());
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         final ArrayList<AkarsModel.DataBean.CategoriesBean.AkarsBean> filteredList = new ArrayList<>();
         Call<AkarsModel> akarsModelCall = api.getCategories();
 
@@ -94,7 +94,6 @@ public class SubCategFragment extends Fragment {
                             if (!filterOn)
                                 initAdapter(akarsBean);
                             else {
-//                                Toast.makeText(getActivity(), "" + city, Toast.LENGTH_SHORT).show();
                                 progressBar.setVisibility(View.VISIBLE);
                                 for (int i = 0; i < akarsBean.size(); i++) {
                                     if (akarsBean.get(i).getType_id().equals(type) &&
@@ -275,7 +274,7 @@ public class SubCategFragment extends Fragment {
     public void onAttach(Activity context) {
         super.onAttach(context);
         try {
-            mMainViewsCallBack = (IoCallBack) context;
+            mMainViewsCallBack = (MainViewCallBack) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "error");
         }

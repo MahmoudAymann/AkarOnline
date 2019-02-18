@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="type">
-        <item>@string/choosetype</item>
         <item>@string/for_rent</item>
         <item>@string/for_sale</item>
     </string-array>
     <string-array name="garage">
-        <item>@string/garage_qm</item>
         <item>@string/yes</item>
         <item>@string/no</item>
     </string-array>
     <string-array name="bathroom">
-        <item>@string/bathroom_qm</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -25,7 +22,6 @@
     </string-array>
 
     <string-array name="bedroom">
-        <item>@string/bedroom_qm</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>

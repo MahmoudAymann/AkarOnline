@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.navfragment;
+package com.tkmsoft.akarat.fragment.main.navfragment;
 
 
 import android.Manifest;
@@ -38,7 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
-import com.tkmsoft.akarat.MainActivity;
+import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.R;
 import com.tkmsoft.akarat.adapter.BathroomAdapter;
 import com.tkmsoft.akarat.adapter.BedroomAdapter;
@@ -47,8 +47,8 @@ import com.tkmsoft.akarat.adapter.SpinnerCityAdapter;
 import com.tkmsoft.akarat.adapter.SpinnerDepertmentAdapter;
 import com.tkmsoft.akarat.adapter.SpinnerDiscirt;
 import com.tkmsoft.akarat.adapter.TypeAdapter;
-import com.tkmsoft.akarat.api.Api;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
+import com.tkmsoft.akarat.network.api.Api;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.AddModel;
 import com.tkmsoft.akarat.model.AkarsModel;
 import com.tkmsoft.akarat.model.BathroomModel;
@@ -101,7 +101,7 @@ public class OfferFragment extends Fragment {
     ListSharePreference.Get getSharedPreference;
     CheckBox checkBox;
     private ProgressBar progressBar;
-    private IoCallBack mMainViewsCallBack;
+    private MainViewCallBack mMainViewsCallBack;
     MapView mapView;
     GoogleMap map2;
     Marker marker;
@@ -189,7 +189,7 @@ public class OfferFragment extends Fragment {
         checkBox = root.findViewById(R.id.checkBox);
         progressBar = root.findViewById(R.id.progerss2);
         bmap = root.findViewById(R.id.mapBtn);
-        linearLayout = root.findViewById(R.id.lin4);
+        linearLayout = root.findViewById(R.id.distLinearLayout);
         try {
             initServiceCity();
             try {
@@ -416,7 +416,7 @@ public class OfferFragment extends Fragment {
         MultipartBody.Part image1 = MultipartBody.Part.createFormData("imgs[0]", file1.getName(), mFile1);
         MultipartBody.Part image2 = MultipartBody.Part.createFormData("imgs[1]", file2.getName(), mFile2);
         MultipartBody.Part image3 = MultipartBody.Part.createFormData("imgs[2]", file3.getName(), mFile3);
-        Api api = MyRetrofitClient.show().create(Api.class);
+        Api api = MyRetrofitClient.getShow().create(Api.class);
         Call<AddModel> akarsModelCall = api.offerAkarAll(token1, name1, type1, depertt1, city_id1, discirt1, bed2, bath2, grage1, areaa1, price, add1, condition, lat, long1, about1, image1, image2, image3);
         akarsModelCall.enqueue(new Callback<AddModel>() {
             @Override
@@ -478,7 +478,7 @@ public class OfferFragment extends Fragment {
         RequestBody about1 = RequestBody.create(MediaType.parse("text/plain"), aboutt);
         MultipartBody.Part image1 = MultipartBody.Part.createFormData("imgs[0]", file1.getName(), mFile1);
         MultipartBody.Part image2 = MultipartBody.Part.createFormData("imgs[1]", file2.getName(), mFile2);
-        Api api = MyRetrofitClient.show().create(Api.class);
+        Api api = MyRetrofitClient.getShow().create(Api.class);
         Call<AddModel> akarsModelCall = api.offerAkar2(token1, name1, type1, depertt1, city_id1, discirt1, bed2, bath2, grage1, areaa1, price, add1, condition, lat, long1, about1, image1, image2);
         akarsModelCall.enqueue(new Callback<AddModel>() {
             @Override
@@ -510,7 +510,7 @@ public class OfferFragment extends Fragment {
 
     private void iniservicedepert() {
 
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<AkarsModel> akarsModelCall = api.getCategories();
         akarsModelCall.enqueue(new Callback<AkarsModel>() {
             @Override
@@ -544,7 +544,7 @@ public class OfferFragment extends Fragment {
 
     private void initServiceCity() {
 
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<CityModel> loginModelCall = api.getcity();
         loginModelCall.enqueue(new Callback<CityModel>() {
 
@@ -605,7 +605,7 @@ public class OfferFragment extends Fragment {
     }
 
     private void serverDistrict(final int cityPos) {
-        Api api = MyRetrofitClient.categories().create(Api.class);
+        Api api = MyRetrofitClient.getBase().create(Api.class);
         Call<CityModel> loginModelCall = api.getcity();
         loginModelCall.enqueue(new Callback<CityModel>() {
 
@@ -800,7 +800,7 @@ public class OfferFragment extends Fragment {
         }
         super.onAttach(context);
         try {
-            mMainViewsCallBack = (IoCallBack) context;
+            mMainViewsCallBack = (MainViewCallBack) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "error");
         }

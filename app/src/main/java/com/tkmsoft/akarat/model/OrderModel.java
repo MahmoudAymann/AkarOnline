@@ -6,7 +6,7 @@ public class OrderModel {
 
     /**
      * status : {"type":"success","title":"تم اضافه البيانات بنجاح بنتظار موافقه الادمن"}
-     * data : {"order_info":{"name":"test36","type_id":"0","category_id":"1","city_id":"1","disrict_id":"1","rooms":"5","bathrooms":"2","garage":"0","area":"0987","price":"55525","address":"asdadasd","condition":"1","lat":"30.04422","long":"31.653225","code":"xbpRxeIa38","order":1,"approve":1,"member_id":27,"updated_at":"2018-10-06 10:24:38","created_at":"2018-10-06 10:24:38","id":34,"type":"ايجار","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}}
+     * data : {"order_info":{"name":"test36","type_id":"0","category_id":"1","city_id":"1","disrict_id":"1","rooms":"5","bathrooms":"2","garage":"0","area":"0987","price":"55525","address":"asdadasd","condition":"1","lat":"30.04422","long":"31.653225","code":"xbpRxeIa38","getOrder":1,"approve":1,"member_id":27,"updated_at":"2018-10-06 10:24:38","created_at":"2018-10-06 10:24:38","id":34,"type":"ايجار","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}}
      */
 
     private StatusBean status;
@@ -56,7 +56,7 @@ public class OrderModel {
 
     public static class DataBean {
         /**
-         * order_info : {"name":"test36","type_id":"0","category_id":"1","city_id":"1","disrict_id":"1","rooms":"5","bathrooms":"2","garage":"0","area":"0987","price":"55525","address":"asdadasd","condition":"1","lat":"30.04422","long":"31.653225","code":"xbpRxeIa38","order":1,"approve":1,"member_id":27,"updated_at":"2018-10-06 10:24:38","created_at":"2018-10-06 10:24:38","id":34,"type":"ايجار","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}
+         * order_info : {"name":"test36","type_id":"0","category_id":"1","city_id":"1","disrict_id":"1","rooms":"5","bathrooms":"2","garage":"0","area":"0987","price":"55525","address":"asdadasd","condition":"1","lat":"30.04422","long":"31.653225","code":"xbpRxeIa38","getOrder":1,"approve":1,"member_id":27,"updated_at":"2018-10-06 10:24:38","created_at":"2018-10-06 10:24:38","id":34,"type":"ايجار","category_name":"البيوت","city_name":"جدة","disrict_name":"الشاطيء","category":{"id":1,"name":"البيوت","photo":"1.jpg","created_at":"2018-08-27 14:41:28","updated_at":"2018-08-28 11:31:38"},"city":{"id":1,"name":"جدة","created_at":"2018-08-27 13:16:40","updated_at":"2018-09-05 06:36:31"},"disrict":{"id":1,"name":"الشاطيء","city_id":"1","created_at":"2018-08-27 13:16:51","updated_at":"2018-09-05 06:37:33"}}
          */
 
         private OrderInfoBean order_info;
@@ -86,7 +86,7 @@ public class OrderModel {
              * lat : 30.04422
              * long : 31.653225
              * code : xbpRxeIa38
-             * order : 1
+             * getOrder : 1
              * approve : 1
              * member_id : 27
              * updated_at : 2018-10-06 10:24:38

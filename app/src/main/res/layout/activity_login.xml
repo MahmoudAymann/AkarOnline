@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tkmsoft.akarat.LoginActivity">
+    tools:context="com.tkmsoft.akarat.activities.LoginActivity">
 
     <FrameLayout
-        android:id="@+id/frame_home"
+        android:id="@+id/login_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>

@@ -92,7 +92,7 @@
     <string name="saudi_ryal">SR</string>
     <string name="name_">Name:</string>
     <string name="type_">Type:</string>
-    <string name="wrong_email_format">wroong email format</string>
+    <string name="wrong_email_format">wrong email format</string>
     <string name="error_invalid_password">password is too short</string>
     <string name="plz_enter_new_pass">please enter new password</string>
     <string name="plz_enter_old_pass">please_enter_old_pass</string>
@@ -109,6 +109,16 @@
     <string name="no_internet">no internet connect</string>
     <string name="choose_1and_2"><![CDATA[please choose 1 & 2 only]]></string>
     <string name="garage_">Garage:</string>
+    <string name="user_not_found">user not found</string>
+    <string name="inc_pass">incorrect password</string>
+    <string name="email_is_taken">email is taken</string>
+    <string name="phone_is_taken">phone is taken</string>
+    <string name="registered_success">registration success</string>
+    <string name="enter_pass_confirm">enter pass confirm</string>
+    <string name="enter_pass">enter password</string>
+    <string name="enter_mobile_num">enter mobile num</string>
+    <string name="enter_name">enter name</string>
+    <string name="enter_email">enter email</string>
 
 
 </resources>

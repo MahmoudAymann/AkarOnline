@@ -104,4 +104,14 @@
     <string name="max">الى</string>
     <string name="no_internet">لا يوجد اتصال بالشبكة</string>
     <string name="choose_1and_2">اختار صورة 1 و 2 فقط</string>
+    <string name="user_not_found">user not found</string>
+    <string name="inc_pass">incorrect password</string>
+    <string name="email_is_taken">email is taken</string>
+    <string name="phone_is_taken">phone is taken</string>
+    <string name="registered_success">تم التسجيل بنجاح</string>
+    <string name="enter_pass_confirm">تأكيد كلمة المرور غير صحيحة</string>
+    <string name="enter_pass">enter password</string>
+    <string name="enter_mobile_num">enter mobile num</string>
+    <string name="enter_name">enter name</string>
+    <string name="enter_email">enter email</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:focusableInTouchMode="true">
 
-        <include layout="@layout/progress_bar"/>
+
 
         <ImageView
             android:id="@+id/image"
@@ -94,18 +94,19 @@
             android:text="@string/login"
             android:textColor="@color/white" />
 
+
+
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_below="@id/login"
             android:layout_centerHorizontal="true"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:gravity="bottom"
             android:orientation="horizontal"
-            android:paddingBottom="2dp">
+            android:paddingBottom="@dimen/dim_8dp">
 
             <Button
                 android:id="@+id/signup_button"
@@ -130,8 +131,15 @@
                 android:background="@drawable/designbutton"
                 android:text="@string/sing_in"
                 android:textColor="@color/white" />
-
         </LinearLayout>
+
+        <include layout="@layout/progress_bar"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 </ScrollView>
 

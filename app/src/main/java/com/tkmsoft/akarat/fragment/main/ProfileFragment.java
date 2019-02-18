@@ -1,4 +1,4 @@
-package com.tkmsoft.akarat.fragment;
+package com.tkmsoft.akarat.fragment.main;
 
 
 import android.Manifest;
@@ -23,10 +23,10 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.tkmsoft.akarat.MainActivity;
+import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.R;
-import com.tkmsoft.akarat.api.Api;
-import com.tkmsoft.akarat.interfaces.IoCallBack;
+import com.tkmsoft.akarat.network.api.Api;
+import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.ProfileModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.ListSharePreference;
@@ -52,7 +52,7 @@ public class ProfileFragment extends Fragment {
     CircleImageView imageView;
     EditText NameTextView, EmailTextView, number, oldpasswordET, newpassET;
     Button update;
-    IoCallBack mMainViewsCallBack;
+    MainViewCallBack mMainViewsCallBack;
     String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -108,7 +108,7 @@ public class ProfileFragment extends Fragment {
         try {
             progressBar.setVisibility(View.VISIBLE);
             String api1 = getSharedPreference.gettokenId();
-            Api api = MyRetrofitClient.getBase().create(Api.class);
+            Api api = MyRetrofitClient.getAuth().create(Api.class);
             Call<ProfileModel> loginModelCall = api.profileNoImage(NameTextView.getText().toString(), EmailTextView.getText().toString(), number.getText().toString(), oldpasswordET.getText().toString(), newpassET.getText().toString(), api1);
             loginModelCall.enqueue(new Callback<ProfileModel>() {
                 @Override
@@ -127,7 +127,7 @@ public class ProfileFragment extends Fragment {
                                 saveUserInfo(id, email, name, mobile, image);
 
                                 Intent myIntent = new Intent();
-                                myIntent.setClassName("com.tkmsoft.akarat", "com.tkmsoft.akarat.MainActivity");
+                                myIntent.setClassName("com.tkmsoft.akarat", "com.tkmsoft.akarat.activities.MainActivity");
                                 startActivity(myIntent);
                                 getActivity().finish();
                             } else
@@ -154,7 +154,7 @@ public class ProfileFragment extends Fragment {
             if (getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED) {
                 // Permission is not granted
-                // Should we show an explanation?
+                // Should we getShow an explanation?
                 if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                         Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     // Show an explanation to the user *asynchronously* -- don't block
@@ -256,7 +256,7 @@ public class ProfileFragment extends Fragment {
             RequestBody number1 = RequestBody.create(MediaType.parse("text/plain"), number.getText().toString());
             RequestBody old_password = RequestBody.create(MediaType.parse("text/plain"), oldpasswordET.getText().toString());
             RequestBody password1 = RequestBody.create(MediaType.parse("text/plain"), newpassET.getText().toString());
-            Api api = MyRetrofitClient.getBase().create(Api.class);
+            Api api = MyRetrofitClient.getAuth().create(Api.class);
             Call<ProfileModel> loginModelCall = api.profile(
                     name,
                     email,
@@ -324,7 +324,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Activity context) {
         super.onAttach(context);
         try {
-            mMainViewsCallBack = (IoCallBack) context;
+            mMainViewsCallBack = (MainViewCallBack) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "error");
         }
