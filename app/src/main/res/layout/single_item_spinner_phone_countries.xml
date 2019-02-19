@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
+    android:background="@color/colorPrimary"
     android:paddingTop="@dimen/dim_8dp"
     android:paddingBottom="@dimen/dim_8dp"
     android:paddingStart="@dimen/dim_8dp"
@@ -13,8 +13,8 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:gravity="center|start"
-      android:textColor="@color/colorAccent"
-      android:textSize="20sp"
+      android:textColor="@color/white"
+      android:textSize="18sp"
       android:text="asdasdasdasdasdasd"/>
 
 </LinearLayout>

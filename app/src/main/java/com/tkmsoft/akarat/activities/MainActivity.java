@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity
                 .into(mNavCircleImageView);
         Intent intent = getIntent();
        int key = intent.getIntExtra("key", 0);
-//        Toast.makeText(this, ""+ intent.getStringExtra("type"), Toast.LENGTH_SHORT).getShow();
         if (key == 1) {
             Bundle bundle = new Bundle();
             bundle.putString("type", intent.getStringExtra("type"));
@@ -105,10 +104,10 @@ public class MainActivity extends AppCompatActivity
             bundle.putBoolean("filterOn", true);
             SubCategFragment detailsFragment = new SubCategFragment();
             detailsFragment.setArguments(bundle);
-            getFragmentManager().beginTransaction().replace(R.id.main_frame, detailsFragment).addToBackStack(null).commit();
+            moveFragment.moveInMain(detailsFragment);
 
         } else {
-            getFragmentManager().beginTransaction().replace(R.id.main_frame, new HomeFragment()).commit();
+            moveFragment.moveInMain(new HomeFragment());
         }
     }
 

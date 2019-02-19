@@ -91,8 +91,10 @@ public class SubCategFragment extends Fragment {
                     if (response.body() != null) {
                         if (response.body().getStatus().getType().equals("success")) {
                             ArrayList<AkarsModel.DataBean.CategoriesBean.AkarsBean> akarsBean = response.body().getData().getCategories().get(categPos).getAkars();
-                            if (!filterOn)
+                            if (!filterOn) {
                                 initAdapter(akarsBean);
+                                Toast.makeText(getActivity(), "ss", Toast.LENGTH_SHORT).show();
+                            }
                             else {
                                 progressBar.setVisibility(View.VISIBLE);
                                 for (int i = 0; i < akarsBean.size(); i++) {

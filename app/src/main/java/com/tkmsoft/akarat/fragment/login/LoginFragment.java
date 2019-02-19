@@ -169,7 +169,7 @@ public class LoginFragment extends Fragment {
                                         Toast.makeText(mContext, "" + statusBean.getTitle(), Toast.LENGTH_SHORT).show();
                                     else
                                         Toast.makeText(mContext, "" + getString(R.string.user_not_found), Toast.LENGTH_SHORT).show();
-                                } else if (msg.equals("كلمه المرور خظأ")) {
+                                } else if (msg.equals("كلمة المرور خطأ")) {
                                     if (mLanguage.equals("ar"))
                                         Toast.makeText(mContext, "" + statusBean.getTitle(), Toast.LENGTH_SHORT).show();
                                     else

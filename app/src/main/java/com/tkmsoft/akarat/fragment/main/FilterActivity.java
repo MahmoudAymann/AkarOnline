@@ -1,14 +1,17 @@
 package com.tkmsoft.akarat.fragment.main;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,10 +30,18 @@ import com.tkmsoft.akarat.model.BedroomModel;
 import com.tkmsoft.akarat.model.CityModel;
 import com.tkmsoft.akarat.model.typeModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
+import com.tkmsoft.akarat.util.InitSpinner;
+import com.tkmsoft.akarat.util.ListSharePreference;
+import com.tkmsoft.akarat.util.MyApp;
+import com.tkmsoft.akarat.util.MyContextWrapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import retrofit2.Call;
@@ -50,40 +61,67 @@ public class FilterActivity extends AppCompatActivity {
     EditText areaMinET;
     @BindView(R.id.distanceMaxET)
     EditText areaMaxET;
-    SpinnerDiscirt spinnerAdapter1;
-    SpinnerCityAdapter spinnerAdapter;
-    Spinner city, disc, depertment, bathroom, bedroom, typespinner, gragespinner;
+    @BindView(R.id.distLinearLayout)
+    LinearLayout distLinearLayout;
+    Spinner citySpinner, distinctSpinner, bathRoomSpinner, bedRoomSpinner, typespinner;
     ImageButton imageButton;
-    ArrayList<String> cityArrayList, disccArrayList;
-    LinearLayout linearLayout;
+    ArrayList<String> cityList, discList, typeList, bathRoomsList, bedRoomList;
+    ArrayList<Integer> cityIdList, distinctIdList;
     private String typeCode, districtCode, cityCode, bathCode, roomsCode, garageCode, priceMin, PriceMax, distanceMin, distanceMax;
+    private ListSharePreference.Set setSharedPreference;
+    private ListSharePreference.Get getSharedPreference;
+    private InitSpinner initSpinner;
+    private ArrayList<CityModel.DataBean.CitiesBean> citiesModelList;
+    private Api apiBase;
+    @BindViews({R.id.yesRB, R.id.noRB, R.id.allRB})
+    List<RadioButton> radioButtonList;
+    RadioButton yesRB, noRB, allRB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         ButterKnife.bind(this);
+        initSpinner = new InitSpinner(this);
+        setLayoutLanguage();
         imageButton = findViewById(R.id.closeBtn);
+        apiBase = MyRetrofitClient.getBase().create(Api.class);
         iniui();
     }
 
-    private void iniTypeSpinner() {
-        //for rent or sale
+    private void setLayoutLanguage() {
+        if (getLang().equals("ar"))
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+    }
+
+    private String getLang() {
+        return getSharedPreference.getLanguage();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        setSharedPreference = new ListSharePreference.Set(newBase);
+        getSharedPreference = new ListSharePreference.Get(newBase);
+        super.attachBaseContext(MyContextWrapper.wrap(newBase, getLang()));
+    }
+
+    private void initTypeSpinner() {//no3
         String[] typeStringNames = getResources().getStringArray(R.array.type);
-        ArrayList<typeModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            typeModel item = new typeModel(countries);
-            countriesModelsList.add(item);
-        }
-        final TypeAdapter typeAdapter = new TypeAdapter(this, countriesModelsList);
-        typespinner.setAdapter(typeAdapter);
-        typespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        typeList = new ArrayList<>();
+        typeList.add(getString(R.string.type));
+        typeList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(typespinner, typeList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i > 0)
+                if (i > 0) {
                     typeCode = String.valueOf(i - 1);
-                else
+                } else {
                     typeCode = null;
+                }
             }
 
             @Override
@@ -92,25 +130,22 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
-    private void iniBathroomSpinner() {
+    private void initBathroomSpinner() {
         String[] typeStringNames = getResources().getStringArray(R.array.bathroom);
-        ArrayList<BathroomModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            BathroomModel item = new BathroomModel(countries);
-            countriesModelsList.add(item);
-        }
-        BathroomAdapter bathroomAdapter = new BathroomAdapter(FilterActivity.this, countriesModelsList);
-        bathroom.setAdapter(bathroomAdapter);
-        bathroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        bathRoomsList = new ArrayList<>();
+        bathRoomsList.add(getString(R.string.bathrooms));
+        bathRoomsList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(bathRoomSpinner, bathRoomsList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i > 0)
+                if (i > 0) {
                     bathCode = String.valueOf(i);
-                else
+                } else {
                     bathCode = null;
+                }
             }
 
             @Override
@@ -118,25 +153,25 @@ public class FilterActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
-    private void iniRoomSpinner() {
+    private void initRoomSpinner() {
 
         String[] typeStringNames = getResources().getStringArray(R.array.bedroom);
-        ArrayList<BedroomModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            BedroomModel item = new BedroomModel(countries);
-            countriesModelsList.add(item);
-        }
-        BedroomAdapter bedroomAdapter = new BedroomAdapter(this, countriesModelsList);
-        bedroom.setAdapter(bedroomAdapter);
-        bedroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        bedRoomList = new ArrayList<>();
+        bedRoomList.add(getString(R.string.bedroom_));
+        bedRoomList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(bedRoomSpinner, bedRoomList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i > 0)
+                if (i > 0) {
                     roomsCode = String.valueOf(i);
-                else
+                } else {
                     roomsCode = null;
+                }
             }
 
             @Override
@@ -144,21 +179,36 @@ public class FilterActivity extends AppCompatActivity {
 
             }
         });
+
     }
 
     private void iniui() {
-        city = findViewById(R.id.spinner1);
-        disc = findViewById(R.id.spinner2);
-        bathroom = findViewById(R.id.spinner3);
-        bedroom = findViewById(R.id.spinner4);
-        typespinner = findViewById(R.id.spinner);
-        linearLayout = findViewById(R.id.lin3);
+        citySpinner = findViewById(R.id.city_spinner);
+        distinctSpinner = findViewById(R.id.distinct_spinner);
+        bathRoomSpinner = findViewById(R.id.bathroom_spinner);
+        bedRoomSpinner = findViewById(R.id.bedroom_spinner);
+        typespinner = findViewById(R.id.type_spinner);
+        yesRB = radioButtonList.get(0);
+        noRB = radioButtonList.get(1);
+        allRB = radioButtonList.get(2);
+
+        //city
+        cityList = new ArrayList<>();
+        cityList.add(getString(R.string.city));
+        cityIdList = new ArrayList<>();
+        cityIdList.add(0);
+        initCitySpinner();
+        serverCity();
+
         initPriceRaneBar();
         initDistanceRangeBar();
-        iniTypeSpinner();
-        iniBathroomSpinner();
-        iniRoomSpinner();
-        initServiceCity();
+
+        //type
+        initTypeSpinner();
+
+        initBathroomSpinner();
+        initRoomSpinner();
+        initCitySpinner();
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +216,34 @@ public class FilterActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        yesRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if  (b){
+                    garageCode = "1";
+                }
+            }
+        });
+
+        noRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    garageCode = "0";
+                }
+            }
+        });
+
+        allRB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    garageCode = null;
+                }
+            }
+        });
+
     }
 
     @OnClick(R.id.updateBtn)
@@ -181,26 +259,94 @@ public class FilterActivity extends AppCompatActivity {
 //        myIntent.putExtra("priceMax", priceMaxET.getText().toString());
 //        myIntent.putExtra("areaMin", areaMinET.getText().toString());
 //        myIntent.putExtra("areaMax", areaMaxET.getText().toString());
+
         myIntent.putExtra("key", 1);
 //        Toast.makeText(this, "before: " + cityCode, Toast.LENGTH_SHORT).getShow();
-        myIntent.setClassName("com.tkmsoft.akarat", MainActivity.class.getCanonicalName());
+        myIntent.setClassName(MyApp.getContext().getPackageName(), Objects.requireNonNull(MainActivity.class.getCanonicalName()));
         startActivity(myIntent);
     }
 
-    private void initServiceCity() {
-        Api api = MyRetrofitClient.getBase().create(Api.class);
-        Call<CityModel> loginModelCall = api.getcity();
-        loginModelCall.enqueue(new Callback<CityModel>() {
+    private void initCitySpinner() {
+        initSpinner.setSpinner(citySpinner, cityList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0) {
+                    cityCode = String.valueOf(cityIdList.get(i));
+                    distLinearLayout.setVisibility(View.VISIBLE);
+                    initDistinctSpinner();
+                } else {
+                    cityCode = null;
+                    districtCode = null;
+                    distLinearLayout.setVisibility(View.GONE);
+                }
+            }
 
             @Override
-            public void onResponse(@NonNull Call<CityModel> call, @NonNull Response<CityModel> response) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });
+
+    }
+
+    private void initDistinctSpinner() {
+        discList = new ArrayList<>();
+        discList.add(getString(R.string.distinct));
+
+        distinctIdList = new ArrayList<>();
+        distinctIdList.add(0);
+
+        for (int i = 0; i < citiesModelList.size(); i++) {
+            if (String.valueOf(cityCode).equals(String.valueOf(citiesModelList.get(i).getId()))) {
+                List<CityModel.DataBean.CitiesBean.DisrictsBean> districtsBeanList = citiesModelList.get(i).getDisricts();
+                if (districtsBeanList != null) {
+                    for (int k = 0; k < districtsBeanList.size(); k++) {
+                        discList.add(districtsBeanList.get(k).getName());
+                        distinctIdList.add(districtsBeanList.get(k).getId());
+                    }
+                    break;
+                }
+            }
+        }
+
+        initSpinner.setSpinner(distinctSpinner, discList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0) {
+                    districtCode = String.valueOf(distinctIdList.get(i));
+                } else {
+                    districtCode = null;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+    private void serverCity() {
+        callGetCity().enqueue(new Callback<CityModel>() {
+            @Override
+            public void onResponse(@NonNull Call<CityModel> call, @NonNull Response<CityModel> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        try {
-                            iniCitySpinner(response.body().getData().getCities());
-                        } catch (Exception e) {
-                            Toast.makeText(FilterActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    assert response.body() != null;
+                    CityModel.StatusBean statusBean = response.body().getStatus();
+                    if (statusBean != null) {
+                        if (statusBean.getType().equals("success")) {
+                            CityModel.DataBean dataBean = response.body().getData();
+                            if (dataBean != null) {
+                                citiesModelList = dataBean.getCities();
+                                if (citiesModelList != null) {
+                                    for (int i = 0; i < citiesModelList.size(); i++) {
+                                        cityList.add(citiesModelList.get(i).getName());
+                                        cityIdList.add(citiesModelList.get(i).getId());
+                                    }
+                                    initCitySpinner();
+                                }
+                            }
                         }
                     }
                 }
@@ -208,98 +354,14 @@ public class FilterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(@NonNull Call<CityModel> call, @NonNull Throwable t) {
-
-                Toast.makeText(FilterActivity.this, R.string.errorconnection, Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
-
-            }
-        });
-
-
-    }
-
-    private void iniCitySpinner(final ArrayList<CityModel.DataBean.CitiesBean> cities) {
-        cityArrayList = new ArrayList<>();
-        cityArrayList.add(0, getString(R.string.choosecit));
-
-        for (int i = 0; i < cities.size(); i++) {
-            cityArrayList.add(cities.get(i).getName());
-        }
-
-        spinnerAdapter = new SpinnerCityAdapter(this, cityArrayList);
-        city.setAdapter(spinnerAdapter);
-        city.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (i > 0) {
-                    linearLayout.setVisibility(LinearLayout.VISIBLE);
-                    cityCode = String.valueOf(cities.get(i - 1).getId());
-                    initServiceDistrict();
-                } else {
-                    linearLayout.setVisibility(LinearLayout.GONE);
-                    districtCode = String.valueOf(0);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-    }
-
-    private void initServiceDistrict() {
-        Api api = MyRetrofitClient.getBase().create(Api.class);
-        Call<CityModel> loginModelCall = api.getcity();
-        loginModelCall.enqueue(new Callback<CityModel>() {
-            int pos = Integer.parseInt(cityCode);
-
-            @Override
-            public void onResponse(@NonNull Call<CityModel> call, @NonNull Response<CityModel> response) {
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        if (response.body().getStatus().getType().equals("success"))
-                            iniDistinctSpinner(response.body().getData().getCities().get(pos - 1).getDisricts());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<CityModel> call, @NonNull Throwable t) {
                 t.printStackTrace();
             }
         });
+
     }
 
-    private void iniDistinctSpinner(final ArrayList<CityModel.DataBean.CitiesBean.DisrictsBean> disricts) {
-        disccArrayList = new ArrayList<>();
-        disccArrayList.clear();
-        disccArrayList.add(0, getString(R.string.chooseDistrict));
-
-        for (int i = 0; i < disricts.size(); i++) {
-            disccArrayList.add(disricts.get(i).getName());
-        }
-        spinnerAdapter1 = new SpinnerDiscirt(FilterActivity.this, disccArrayList);
-        disc.setAdapter(spinnerAdapter1);
-        disc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (i > 0) {
-                    districtCode = String.valueOf(disricts.get(i - 1).getId());
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
+    private Call<CityModel> callGetCity() {
+        return apiBase.getcity();
     }
 
     private void initPriceRaneBar() {

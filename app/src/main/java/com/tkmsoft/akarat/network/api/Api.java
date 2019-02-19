@@ -37,22 +37,22 @@ public interface Api {
     @POST("add")
     Call<OrderModel> getorder(@Field("api_token") String api_token,
                               @Field("name") String name,
-                              @Field("type_id") String type_id,
-                              @Field("category_id") String category_id,
-                              @Field("city_id") String city_id,
-                              @Field("disrict_id") String disrict_id,
-                              @Field("rooms") String rooms,
-                              @Field("bathrooms") String bathrooms,
-                              @Field("garage") String garage,
+                              @Field("type_id") Integer type_id,
+                              @Field("category_id") Integer category_id,
+                              @Field("city_id") Integer city_id,
+                              @Field("disrict_id") Integer disrict_id,
+                              @Field("rooms") Integer rooms,
+                              @Field("bathrooms") Integer bathrooms,
+                              @Field("garage") Integer garage,
                               @Field("area") String area,
                               @Field("price") String price,
                               @Field("address") String address,
                               @Field("condition") String condition,
-                              @Field("lat") String lat,
-                              @Field("long") String longg
+                              @Field("lat") double lat,
+                              @Field("long") double longg
     );
 
-    @GET("getBase")
+    @GET("categories")
     Call<AkarsModel> getCategories();
 
     @GET("cities")

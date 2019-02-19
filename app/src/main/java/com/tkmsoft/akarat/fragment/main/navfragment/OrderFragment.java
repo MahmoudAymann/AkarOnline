@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,24 +27,14 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.R;
-import com.tkmsoft.akarat.adapter.BathroomAdapter;
-import com.tkmsoft.akarat.adapter.BedroomAdapter;
-import com.tkmsoft.akarat.adapter.GrageAdapter;
-import com.tkmsoft.akarat.adapter.SpinnerCityAdapter;
-import com.tkmsoft.akarat.adapter.SpinnerDepertmentAdapter;
-import com.tkmsoft.akarat.adapter.SpinnerDiscirt;
 import com.tkmsoft.akarat.fragment.main.home.HomeFragment;
 import com.tkmsoft.akarat.network.api.Api;
 import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.model.AkarsModel;
-import com.tkmsoft.akarat.model.BathroomModel;
-import com.tkmsoft.akarat.model.BedroomModel;
 import com.tkmsoft.akarat.model.CityModel;
-import com.tkmsoft.akarat.model.GrageModel;
 import com.tkmsoft.akarat.model.OrderModel;
 import com.tkmsoft.akarat.network.MyRetrofitClient;
 import com.tkmsoft.akarat.util.BaseBackPressedListener;
@@ -67,17 +58,10 @@ import retrofit2.Response;
  */
 public class OrderFragment extends Fragment {
 
-    SpinnerCityAdapter spinnerAdapter;
-    SpinnerDiscirt spinnerAdapter1;
-    SpinnerDepertmentAdapter spinnerDepertmentAdapter;
-    Spinner citySpinner, distinctSpinner, deptSpinner, bathroom, bedroom, typespinner, gragespinner;
-    int city_pos;
-    int distinctCode, dept, bath, bed, type, grage;
-    int discirt1, depertt1, bath1, bed1, type1, grage1, idcity1;
-    EditText address, price, area;
+    Spinner citySpinner, distinctSpinner, deptSpinner, bathRoomSpinner, bedRoomSpinner, typespinner, garageSpinner;
+    int distinctCode, deptCode, bathRoomCode, bedCode, typeCode, garageCode, cityCode;
+    EditText addressET, priceET, areaET;
     Button submit;
-    private int cityCode;
-    private int discirt_pos;
     ListSharePreference.Set setSharedPreference;
     ListSharePreference.Get getSharedPreference;
     MainViewCallBack mMainViewsCallBack;
@@ -85,7 +69,6 @@ public class OrderFragment extends Fragment {
     LinearLayout linearLayout;
     MapView mapView;
     GoogleMap map2;
-    Marker marker;
     double la = 0, lo = 0;
     @BindView(R.id.mapBtn)
     Button bmap;
@@ -96,14 +79,16 @@ public class OrderFragment extends Fragment {
     private int check;
     private FragmentActivity mContext;
     private String mLanguage;
-    private Api apiBase;
+    private Api apiBase, apiOrder;
     private MoveToFragment moveToFragment;
     private InitSpinner initSpinner;
-    ArrayList<String> cityList, discList, deptList, typeList;
-    ArrayList<Integer> cityIdList, distinctIdList, deptIdList, typeIdList;
+    ArrayList<String> cityList, discList, deptList, typeList, garageList, bathRoomsList, bedRoomList;
+    ArrayList<Integer> cityIdList, distinctIdList, deptIdList;
     private ArrayList<CityModel.DataBean.CitiesBean> citiesModelList;
     @BindView(R.id.distLinearLayout)
     LinearLayout distLinearLayout;
+    private Bundle bundle;
+    private String TAG = getClass().getSimpleName();
 
     public OrderFragment() {
         // Required empty public constructor
@@ -123,7 +108,7 @@ public class OrderFragment extends Fragment {
         getSharedPreference = new ListSharePreference.Get(mContext);
         moveToFragment = new MoveToFragment(mContext);
         initSpinner = new InitSpinner(mContext);
-
+        fireBackButtonEvent();
     }
 
     @Override
@@ -131,62 +116,103 @@ public class OrderFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mLanguage = getSharedPreference.getLanguage();
         apiBase = MyRetrofitClient.getBase().create(Api.class);
+        apiOrder = MyRetrofitClient.getOrder().create(Api.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             final Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_order, container, false);
         ButterKnife.bind(this, root);
-        mapView.onCreate(savedInstanceState);
-        iniui(root);
-
+        initUI(root);
+        bundle = savedInstanceState;
         return root;
     }
 
-    private void iniui(View root) {
+    private void initUI(View root) {
         setViews(root);
-
-
-        serverCity();
-        serviceDept();
-        iniTypeSpinner();
-        iniGarageSpinner();
-        iniRoomSpinner();
-        iniBathroomSpinner();
-        inibutton();
-
+        setSpinners();
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-
                     check = 1;
-
                 } else {
-
                     check = 0;
-
                 }
             }
 
         });
+    }
+
+    private void setSpinners() {
+        //city
+        cityList = new ArrayList<>();
+        cityList.add(getString(R.string.city));
+        cityIdList = new ArrayList<>();
+        cityIdList.add(0);
+        initCitySpinner();
+        serverCity();
+
+        //type
+        initTypeSpinner();
+
+        //category
+        deptList = new ArrayList<>();
+        deptList.add(getString(R.string.dept));
+        deptIdList = new ArrayList<>();
+        deptIdList.add(0);
+        initDeptSpinner();
+        serviceDept();
+
+        //garage
+        initGarageSpinner();
+
+        //bath
+        initBathroomSpinner();
+
+        //bedrooms
+        initRoomSpinner();
+    }
+
+    private void initTypeSpinner() {//no3
+        String[] typeStringNames = getResources().getStringArray(R.array.type);
+        typeList = new ArrayList<>();
+        typeList.add(getString(R.string.type));
+        typeList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(typespinner, typeList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i > 0) {
+                    typeCode = i - 1;
+                } else {
+                    typeCode = -1;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
     }
+
 
     private void setViews(View root) {
         citySpinner = root.findViewById(R.id.city_spinner);
         distinctSpinner = root.findViewById(R.id.distinct_spinner);
         deptSpinner = root.findViewById(R.id.dept_spinner);
-        bathroom = root.findViewById(R.id.bathroom_spinner);
-        bedroom = root.findViewById(R.id.bedroom_spinner);
+        bathRoomSpinner = root.findViewById(R.id.bathroom_spinner);
+        bedRoomSpinner = root.findViewById(R.id.bedroom_spinner);
         typespinner = root.findViewById(R.id.type_spinner);
-        gragespinner = root.findViewById(R.id.garage_spinner);
+        garageSpinner = root.findViewById(R.id.garage_spinner);
         submit = root.findViewById(R.id.submitBtn);
-        address = root.findViewById(R.id.addressET);
-        price = root.findViewById(R.id.priceET);
-        area = root.findViewById(R.id.areaET);
+        addressET = root.findViewById(R.id.addressET);
+        priceET = root.findViewById(R.id.priceET);
+        areaET = root.findViewById(R.id.areaET);
         linearLayout = root.findViewById(R.id.distLinearLayout);
         progressBar = root.findViewById(R.id.progerss3);
     }
@@ -196,6 +222,7 @@ public class OrderFragment extends Fragment {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
         View mView = getActivity().getLayoutInflater().inflate(R.layout.dialog_map, null);
         mapView = mView.findViewById(R.id.map1);
+        mapView.onCreate(bundle);
 
         mapView.onResume();// needed to get the map to display immediately
 
@@ -214,7 +241,7 @@ public class OrderFragment extends Fragment {
                     @Override
                     public void onMapClick(LatLng latLng) {
                         map2.clear();
-                        map2.addMarker(new MarkerOptions().position(latLng).title(address.getText().toString()));
+                        map2.addMarker(new MarkerOptions().position(latLng).title(addressET.getText().toString()));
 
                         la = latLng.latitude;
                         lo = latLng.longitude;
@@ -229,50 +256,60 @@ public class OrderFragment extends Fragment {
         dialog.show();
     }
 
-    private void inibutton() {
-
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (type1 == -1 || discirt1 == 0 || depertt1 == -1 || idcity1 == 0 || bed1 == -1 || bath1 == -1 || grage1 == -1 || address == null || price == null || area == null) {
-
-                    Toast.makeText(getActivity(), R.string.pleasecompletform, Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-
-                } else {
-                    try {
-                        progressBar.setVisibility(View.VISIBLE);
-                        serivcebutton();
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-
-                }
-
-            }
-        });
-
-
+    @OnClick(R.id.submitBtn)
+    void onSubmitClick() {
+        if (isEditTxtEmpty(nameET)) {
+            if (typeCode != -1) {
+                if (deptCode != -1) {
+                    if (cityCode != -1) {
+                        if (distinctCode != -1) {
+                            if (isEditTxtEmpty(addressET)) {
+                                if (isEditTxtEmpty(priceET)) {
+                                    if (bathRoomCode != -1) {
+                                        if (bedCode != -1) {
+                                            if (garageCode != -1) {
+                                                if (isEditTxtEmpty(areaET)) {
+                                                    if (check == 1)
+                                                        serverSend();
+                                                    else
+                                                        Toast.makeText(mContext, "" + getString(R.string.check_privacy), Toast.LENGTH_SHORT).show();
+                                                } else
+                                                    Toast.makeText(mContext, "" + getString(R.string.enter_area), Toast.LENGTH_SHORT).show();
+                                            } else
+                                                Toast.makeText(mContext, "" + getString(R.string.enter_garage), Toast.LENGTH_SHORT).show();
+                                        } else
+                                            Toast.makeText(mContext, "" + getString(R.string.choose_bedroom), Toast.LENGTH_SHORT).show();
+                                    } else
+                                        Toast.makeText(mContext, "" + getString(R.string.choose_bathroom), Toast.LENGTH_SHORT).show();
+                                } else
+                                    Toast.makeText(mContext, "" + getString(R.string.enter_price), Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(mContext, "" + getString(R.string.enter_address), Toast.LENGTH_SHORT).show();
+                        } else
+                            Toast.makeText(mContext, "" + getString(R.string.chooseDistrict), Toast.LENGTH_SHORT).show();
+                    } else
+                        Toast.makeText(mContext, "" + getString(R.string.enter_city), Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(mContext, "" + getString(R.string.choosedepartment), Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(mContext, "" + getString(R.string.choosetype), Toast.LENGTH_SHORT).show();
+        } else
+            Toast.makeText(mContext, "" + getString(R.string.enter_name), Toast.LENGTH_SHORT).show();
     }
 
-    private void serivcebutton() {
-        String token = getSharedPreference.gettokenId();
-        String pric = price.getText().toString();
-        String add = address.getText().toString();
-        String areaa = area.getText().toString();
-        Api api = MyRetrofitClient.getOrder().create(Api.class);
-        Call<OrderModel> akarsModelCall = api.getorder(token, nameET.getText().toString(), String.valueOf(type), String.valueOf(dept),
-                String.valueOf(cityCode), String.valueOf(distinctCode), String.valueOf(bed1), String.valueOf(bath1),
-                String.valueOf(grage), areaa, pric, add, String.valueOf(check), String.valueOf(la), String.valueOf(lo));
-        akarsModelCall.enqueue(new Callback<OrderModel>() {
+    private boolean isEditTxtEmpty(EditText etText) {
+        return etText.getText().toString().trim().length() != 0;
+    }
+
+    private void serverSend() {
+        progressBar.setVisibility(View.VISIBLE);
+        callSendOrder().enqueue(new Callback<OrderModel>() {
             @Override
             public void onResponse(@NonNull Call<OrderModel> call, @NonNull Response<OrderModel> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         if (response.body().getStatus().getType().equals("success")) {
-                            Toast.makeText(getActivity(), response.body().getStatus().getTitle(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, response.body().getStatus().getTitle(), Toast.LENGTH_SHORT).show();
 
                             moveToFragment.moveInMain(new HomeFragment());
 
@@ -288,12 +325,27 @@ public class OrderFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<OrderModel> call, @NonNull Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
                 t.printStackTrace();
                 progressBar.setVisibility(View.GONE);
 
             }
         });
+    }
+
+    private Call<OrderModel> callSendOrder() {
+        String token = getSharedPreference.gettokenId();
+        String price = priceET.getText().toString();
+        String address = addressET.getText().toString();
+        String area = areaET.getText().toString();
+        String name = nameET.getText().toString();
+        Log.d(TAG, "callSendOrder: " + "\nname: " + name + "\ntype: " + typeCode + "\ndept: " + deptCode +
+                "\ncity: " + cityCode + "\ndistinct: " + distinctCode + "\nbed: " + bedCode + "\nbath: " + bathRoomCode +
+                "\ngarage: " + garageCode + "\nareaET: " + area + "\npriceET: " + price + "\naddressET: " + address +
+                "\ncheck: " + check + "\nlat: " + la + "\nlong: " + lo);
+
+        return apiOrder.getorder(token, name, typeCode, deptCode,
+                cityCode, distinctCode, bedCode, bathRoomCode,
+                garageCode, area, price, address, String.valueOf(check), la, lo);
     }
 
     //Dept
@@ -338,9 +390,9 @@ public class OrderFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0) {
-                    dept = deptIdList.get(i);
+                    deptCode = deptIdList.get(i);
                 } else {
-                    dept = -1;
+                    deptCode = -1;
                 }
             }
 
@@ -352,7 +404,6 @@ public class OrderFragment extends Fragment {
 
     }
 ////////////////////////
-
 
     //City
     private void serverCity() {
@@ -372,7 +423,7 @@ public class OrderFragment extends Fragment {
                                         cityList.add(citiesModelList.get(i).getName());
                                         cityIdList.add(citiesModelList.get(i).getId());
                                     }
-                                    iniCitySpinner();
+                                    initCitySpinner();
                                 }
                             }
                         }
@@ -392,8 +443,8 @@ public class OrderFragment extends Fragment {
         return apiBase.getcity();
     }
 
-    private void iniCitySpinner() {
-        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+    private void initCitySpinner() {
+        initSpinner.setSpinner(citySpinner, cityList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0) {
@@ -412,7 +463,6 @@ public class OrderFragment extends Fragment {
 
             }
         });
-
 
     }
 
@@ -454,29 +504,21 @@ public class OrderFragment extends Fragment {
 
     }
 
-    private void iniGarageSpinner() {
+    private void initGarageSpinner() {
         String[] typeStringNames = getResources().getStringArray(R.array.garage);
-        ArrayList<GrageModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            GrageModel item = new GrageModel(countries);
-            countriesModelsList.add(item);
-        }
-        GrageAdapter grageAdapter = new GrageAdapter(getActivity(), countriesModelsList);
-        gragespinner.setAdapter(grageAdapter);
-        gragespinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        garageList = new ArrayList<>();
+        garageList.add(getString(R.string.grage));
+        garageList.addAll(Arrays.asList(typeStringNames));
+
+
+        initSpinner.setSpinner(garageSpinner, garageList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                i = i - 1;
-                grage1 = i;
-                if (i != -1) {
-                    grage = i;
+                if (i > 0) {
+                    garageCode = i - 1;
                 } else {
-
-                    grage = 0;
+                    garageCode = -1;
                 }
-
-
             }
 
             @Override
@@ -484,23 +526,22 @@ public class OrderFragment extends Fragment {
 
             }
         });
-
-
     }
 
-    private void iniBathroomSpinner() {
+    private void initBathroomSpinner() {
         String[] typeStringNames = getResources().getStringArray(R.array.bathroom);
-        ArrayList<BathroomModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            BathroomModel item = new BathroomModel(countries);
-            countriesModelsList.add(item);
-        }
-        BathroomAdapter bathroomAdapter = new BathroomAdapter(getActivity(), countriesModelsList);
-        bathroom.setAdapter(bathroomAdapter);
-        bathroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        bathRoomsList = new ArrayList<>();
+        bathRoomsList.add(getString(R.string.bathrooms));
+        bathRoomsList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(bathRoomSpinner, bathRoomsList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                bath1 = i;
+                if (i > 0) {
+                    bathRoomCode = i;
+                } else {
+                    bathRoomCode = -1;
+                }
             }
 
             @Override
@@ -512,76 +553,21 @@ public class OrderFragment extends Fragment {
 
     }
 
-    private void iniRoomSpinner() {
+    private void initRoomSpinner() {
 
         String[] typeStringNames = getResources().getStringArray(R.array.bedroom);
-        ArrayList<BedroomModel> countriesModelsList = new ArrayList<>();
-        for (String countries : typeStringNames) {
-            BedroomModel item = new BedroomModel(countries);
-            countriesModelsList.add(item);
-        }
-        BedroomAdapter bedroomAdapter = new BedroomAdapter(getActivity(), countriesModelsList);
-        bedroom.setAdapter(bedroomAdapter);
-        bedroom.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        bedRoomList = new ArrayList<>();
+        bedRoomList.add(getString(R.string.bedroom_));
+        bedRoomList.addAll(Arrays.asList(typeStringNames));
+
+        initSpinner.setSpinner(bedRoomSpinner, bedRoomList).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                bed1 = i;
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-
-    }
-
-
-    private void iniTypeSpinner() {//no3
-        String[] typeStringNames = getResources().getStringArray(R.array.type);
-        typeList = new ArrayList<>(Arrays.asList(typeStringNames));
-
-
-        initSpinner.setSpinner(typespinner, typeList).setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i > 0) {
-                    type = i - 1;
+                    bedCode = i;
                 } else {
-                    type = -1;
+                    bedCode = -1;
                 }
-            }
-        });
-
-
-    }
-
-    private void iniDistinctSpinner(
-            final ArrayList<CityModel.DataBean.CitiesBean.DisrictsBean> disricts) {
-        discList = new ArrayList<>();
-        discList.clear();
-        discList.add(0, getString(R.string.chooseDistrict));
-
-        for (int i = 0; i < disricts.size(); i++) {
-            discList.add(disricts.get(i).getName());
-        }
-        spinnerAdapter1 = new SpinnerDiscirt(getActivity(), discList);
-        distinctSpinner.setAdapter(spinnerAdapter1);
-        distinctSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                discirt1 = i;
-                if (i > 0) {
-                    discirt_pos = i;
-                    distinctCode = disricts.get(i - 1).getId();
-                }
-
-
             }
 
             @Override
@@ -592,7 +578,6 @@ public class OrderFragment extends Fragment {
 
 
     }
-
 
     @Override
     public void onDetach() {

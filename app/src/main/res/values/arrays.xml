@@ -5,8 +5,8 @@
         <item>@string/for_sale</item>
     </string-array>
     <string-array name="garage">
-        <item>@string/yes</item>
         <item>@string/no</item>
+        <item>@string/yes</item>
     </string-array>
     <string-array name="bathroom">
         <item>1</item>

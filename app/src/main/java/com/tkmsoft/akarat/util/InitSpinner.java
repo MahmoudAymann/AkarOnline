@@ -20,7 +20,7 @@ public class InitSpinner {
     }
 
     public Spinner setSpinner(Spinner spinner, ArrayList<String> stringArrayList) {
-        spinner.getBackground().setColorFilter(mContext.getResources().getColor(R.color.colorAccent),
+        spinner.getBackground().setColorFilter(mContext.getResources().getColor(R.color.white),
                 PorterDuff.Mode.SRC_ATOP);
         DefaultSpinnerAdapter adapter = new DefaultSpinnerAdapter(mContext, stringArrayList);
         spinner.setAdapter(adapter);

@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:hint="@string/name"
             android:inputType="text"
             android:maxLines="1"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:paddingEnd="2dp"
             android:paddingStart="2dp">
 
@@ -41,9 +41,8 @@
                 android:id="@+id/type_spinner"
                 style="@style/Spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                tools:ignore="UnusedAttribute" />
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -51,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:paddingEnd="2dp"
             android:paddingStart="2dp">
 
@@ -60,8 +59,7 @@
                 style="@style/Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                tools:ignore="UnusedAttribute" />
+                android:backgroundTint="@color/white" />
         </LinearLayout>
 
 
@@ -70,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:paddingEnd="2dp"
             android:paddingStart="2dp">
 
@@ -79,8 +77,7 @@
                 style="@style/Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                tools:ignore="UnusedAttribute" />
+                android:backgroundTint="@color/white" />
         </LinearLayout>
 
 
@@ -89,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:paddingEnd="2dp"
             android:paddingStart="2dp"
             android:visibility="gone">
@@ -99,8 +96,7 @@
                 style="@style/Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                tools:ignore="UnusedAttribute" />
+                android:backgroundTint="@color/white" />
         </LinearLayout>
 
         <EditText
@@ -108,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:hint="@string/address"
             android:inputType="text"
             android:maxLines="1"
@@ -116,14 +112,14 @@
             android:paddingStart="@dimen/dim_8dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            tools:ignore="LabelFor" />
+            tools:ignore="Autofill,LabelFor" />
 
         <EditText
             android:id="@+id/priceET"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginBottom="@dimen/dim_8dp"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:hint="@string/price"
             android:inputType="numberDecimal"
             android:maxLines="1"
@@ -147,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/designbutton"
+                android:background="@drawable/edtxt_bg"
                 android:paddingEnd="2dp"
                 android:paddingStart="2dp">
 
@@ -166,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/designbutton"
+                android:background="@drawable/edtxt_bg"
                 android:paddingEnd="2dp"
                 android:paddingStart="2dp">
 
@@ -194,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/designbutton"
+                android:background="@drawable/edtxt_bg"
                 android:paddingEnd="2dp"
                 android:paddingStart="2dp">
 
@@ -213,7 +209,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="2dp"
                 android:layout_weight="1"
-                android:background="@drawable/designbutton"
+                android:background="@drawable/edtxt_bg"
                 android:gravity="center"
                 android:hint="@string/area"
                 android:inputType="numberDecimal"
@@ -229,7 +225,7 @@
             android:id="@+id/mapBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/designbutton"
+            android:background="@drawable/edtxt_bg"
             android:text="@string/map"
             android:textColor="@color/white"
             android:textStyle="bold"/>
