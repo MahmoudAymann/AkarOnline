@@ -1,7 +1,7 @@
 package com.tkmsoft.akarat.util;
 
 import android.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import com.tkmsoft.akarat.R;
 
 /**

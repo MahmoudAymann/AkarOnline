@@ -12,11 +12,11 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +54,6 @@ import com.tkmsoft.akarat.util.BaseBackPressedListener;
 import com.tkmsoft.akarat.util.InitSpinner;
 import com.tkmsoft.akarat.util.ListSharePreference;
 import com.tkmsoft.akarat.util.MoveToFragment;
-import com.tkmsoft.akarat.util.MyApp;
 
 import java.io.File;
 import java.util.ArrayList;
