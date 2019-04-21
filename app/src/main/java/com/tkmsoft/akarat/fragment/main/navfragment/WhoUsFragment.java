@@ -4,7 +4,7 @@ package com.tkmsoft.akarat.fragment.main.navfragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +16,6 @@ import com.tkmsoft.akarat.activities.MainActivity;
 import com.tkmsoft.akarat.fragment.main.home.HomeFragment;
 import com.tkmsoft.akarat.interfaces.MainViewCallBack;
 import com.tkmsoft.akarat.util.BaseBackPressedListener;
-import com.tkmsoft.akarat.util.InitSpinner;
-import com.tkmsoft.akarat.util.ListSharePreference;
 import com.tkmsoft.akarat.util.MoveToFragment;
 
 /**

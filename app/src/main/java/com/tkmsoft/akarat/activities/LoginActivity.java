@@ -2,7 +2,7 @@ package com.tkmsoft.akarat.activities;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 
 import com.tkmsoft.akarat.fragment.login.LoginFragment;
